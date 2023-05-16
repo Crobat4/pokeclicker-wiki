@@ -8,7 +8,6 @@ window.Wiki = {
   ...require('./game'),
   ...require('./typeahead'),
   ...require('./markdown-renderer'),
-  ...require('./discord'),
   pokemon: require('./pages/pokemon'),
   farm: require('./pages/farm'),
   items: require('./pages/items'),
