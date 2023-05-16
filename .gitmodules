@@ -1,4 +1,4 @@
 [submodule "pokeclicker"]
 	path = pokeclicker
-	url = https://github.com/pokeclicker/pokeclicker.git
-	branch = master
+	url = https://github.com/Crobat4/pokeclicker.git
+	branch = master-crobat

@@ -12177,6 +12177,7 @@ module.exports = function whichTypedArray(value) {
 module.exports={
   "name": "pokeclicker",
   "version": "0.10.11",
+  "crobatVersion": "0.3.18",
   "description": "PokéClicker repository",
   "main": "index.js",
   "scripts": {
@@ -12268,6 +12269,7 @@ module.exports={
   },
   "dependencies": {
     "bootstrap": "^4.5.3",
+    "bootstrap-icons": "^1.9.1",
     "eslint": "^7.4.0",
     "i18next": "^21.9.2",
     "i18next-browser-languagedetector": "^6.1.5",
@@ -12275,6 +12277,7 @@ module.exports={
     "i18next-http-backend": "^1.4.4",
     "intro.js": "^2.9.3",
     "jquery": "^3.5.1",
+    "jquery-ui": "^1.13.2",
     "knockout": "^3.5.1",
     "popper.js": "^1.16.0",
     "sortablejs": "^1.10.2"
