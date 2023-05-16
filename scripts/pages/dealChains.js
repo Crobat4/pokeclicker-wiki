@@ -6,15 +6,29 @@ class DealProfit {
     }
 }
 
-const calculateProfit = (deal) => {
-    if (deal.item1.valueType != UndergroundItemValueType.Diamond)
-        deal.item1.value = 0;
-    if (deal.item2.valueType != UndergroundItemValueType.Diamond)
-        deal.item2.value = 0;
+const calculateProfit = (deal, shardType) => {
+    if (shardType !== '') {
+        if (deal.item1.name == shardType) {
+            deal.item1.value = 1;
+        } else {
+            deal.item1.value = 0;
+        }
+        if (deal.item2.name == shardType) {
+            deal.item2.value = 1;
+        } else {
+            deal.item2.value = 0;
+        }
+    } else {
+        if (deal.item1.valueType != UndergroundItemValueType.Diamond)
+            deal.item1.value = 0;
+        if (deal.item2.valueType != UndergroundItemValueType.Diamond)
+            deal.item2.value = 0;
+    }
+    
     if (deal.item1.value || deal.item2.value) {
         // An item is worth diamonds
         const profit =
-            deal.item2.value * deal.amount2 - deal.item1.value * deal.amount1;
+            shardType !== '' ? deal.item2.value * deal.amount2 - deal.item1.value * deal.amount1 : deal.item2.value - deal.item1.value;
         return new DealProfit("diamond", profit);
     } else {
         // Neither item is worth diamonds
@@ -23,7 +37,7 @@ const calculateProfit = (deal) => {
     }
 };
 
-const getDealsList = (fromDate, toDate, maxDeals) => {
+const getDealsList = (fromDate, toDate, maxDeals, shardType) => {
     const dealsList = [];
     let date = fromDate;
     let i = 0;
@@ -38,7 +52,7 @@ const getDealsList = (fromDate, toDate, maxDeals) => {
         const deals = [...DailyDeal.list()]
         dealsList.push(
             deals
-                .map((deal) => ({ ...deal, profit: calculateProfit(deal), date }))
+                .map((deal) => ({ ...deal, profit: calculateProfit(deal, shardType), date }))
 .sort((a, b) => {
                     // when processing deals, we want to make sure all possible links
                     // have been processed. Sometimes, there is a deal on the same day
@@ -100,13 +114,14 @@ function getDealChains(
         fromDate.getMonth(),
         fromDate.getDate() + 14
     ),
+    shardType = '',
     limit = 20,
 ) {
     if (isNaN(maxSlots) || maxSlots <= 0 || maxSlots > 5) {
         maxSlots = 3;
     }
 
-    const dailyDeals = getDealsList(fromDate, toDate, maxSlots);
+    const dailyDeals = getDealsList(fromDate, toDate, maxSlots, shardType);
     const chainList = [];
 
     const chainLinks = dailyDeals.reduceRight(
