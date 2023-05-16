@@ -11,43 +11,6 @@ const saveChanges = (editor, filename, btn) => {
     btn.innerText = 'Save Changes';
     return;
   }
-
-  // Update the file contents
-  (async () => {
-    const formData = new FormData();
-    formData.append('path', filename);
-    formData.append('content', content);
-    const rawResponse = await fetch('https://discord.pokeclicker.com/github', {
-      method: 'POST',
-      credentials: 'include',
-      body: formData,
-    });
-
-    // Check if the request was successfull
-    if (rawResponse.status != 200) {
-      Wiki.alert('Something went wrong trying to update this file, please try again later or check the console for more info.', 'danger', 1e4);
-      btn.classList.remove('disabled');
-      btn.innerText = 'Save Changes';
-      return;
-    }
-
-    // Get our response as json
-    const response = await rawResponse.json();
-
-    // If there was any error messages
-    if (response.error_msg) {
-      console.error(response);
-      Wiki.alert('Something went wrong trying to update this file, please try again later or check the console for more info.', 'danger', 1e4);
-      btn.classList.remove('disabled');
-      btn.innerText = 'Save Changes';
-      return;
-    }
-  
-    Wiki.alert('Successfully submitted your changes, please wait a few minutes for these changes to take affect', 'success', 2e4);
-
-    // Take user back to non editor page
-    window.location.hash = window.location.hash.replace(/\/+edit$/, '');
-  })();
 }
 
 const createMarkDownEditor =  (elementID, filename) => {

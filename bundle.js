@@ -12358,30 +12358,6 @@ module.exports = {
 }
 
 },{}],103:[function(require,module,exports){
-const discordLoginJSON = 'https://discord.pokeclicker.com/json';
-
-const discord = {
-  error: ko.observable(''),
-  ID: ko.observable(''),
-  username: ko.observable(''),
-  avatar: ko.observable(''),
-};
-
-fetch(discordLoginJSON, {
-    credentials: 'include'
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    Object.entries(discord).forEach(([key, val]) => {
-      val(data[key] || '');
-    });
-  })
-  .catch((e) => console.error('Discord login check error'));
-
-module.exports = {
-  discord,
-}
-},{}],104:[function(require,module,exports){
 /*
 Initializing anything we need from the game files
 */
@@ -12486,7 +12462,7 @@ Settings.getSetting('theme').observableValue.subscribe(theme => {
   document.body.className = `no-select ${theme}`;
 });
 
-},{}],105:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 // import our version etc
 const package = require('../pokeclicker/package.json');
 
@@ -12497,7 +12473,6 @@ window.Wiki = {
   ...require('./game'),
   ...require('./typeahead'),
   ...require('./markdown-renderer'),
-  ...require('./discord'),
   pokemon: require('./pages/pokemon'),
   farm: require('./pages/farm'),
   items: require('./pages/items'),
@@ -12510,7 +12485,7 @@ window.Wiki = {
   ...require('./navigation'),
 }
 
-},{"../pokeclicker/package.json":101,"./datatables":102,"./discord":103,"./game":104,"./markdown-renderer":111,"./navigation":112,"./notifications":113,"./pages/dealChains":114,"./pages/dreamOrbs":115,"./pages/dungeons":116,"./pages/farm":117,"./pages/farmSimulator":118,"./pages/items":119,"./pages/oakItems":120,"./pages/pokemon":121,"./pages/tempBattles":122,"./typeahead":124}],106:[function(require,module,exports){
+},{"../pokeclicker/package.json":101,"./datatables":102,"./game":103,"./markdown-renderer":110,"./navigation":111,"./notifications":112,"./pages/dealChains":113,"./pages/dreamOrbs":114,"./pages/dungeons":115,"./pages/farm":116,"./pages/farmSimulator":117,"./pages/items":118,"./pages/oakItems":119,"./pages/pokemon":120,"./pages/tempBattles":121,"./typeahead":123}],105:[function(require,module,exports){
 const { md } = require('./markdown-renderer');
 
 const saveChanges = (editor, filename, btn) => {
@@ -12524,43 +12499,6 @@ const saveChanges = (editor, filename, btn) => {
     btn.innerText = 'Save Changes';
     return;
   }
-
-  // Update the file contents
-  (async () => {
-    const formData = new FormData();
-    formData.append('path', filename);
-    formData.append('content', content);
-    const rawResponse = await fetch('https://discord.pokeclicker.com/github', {
-      method: 'POST',
-      credentials: 'include',
-      body: formData,
-    });
-
-    // Check if the request was successfull
-    if (rawResponse.status != 200) {
-      Wiki.alert('Something went wrong trying to update this file, please try again later or check the console for more info.', 'danger', 1e4);
-      btn.classList.remove('disabled');
-      btn.innerText = 'Save Changes';
-      return;
-    }
-
-    // Get our response as json
-    const response = await rawResponse.json();
-
-    // If there was any error messages
-    if (response.error_msg) {
-      console.error(response);
-      Wiki.alert('Something went wrong trying to update this file, please try again later or check the console for more info.', 'danger', 1e4);
-      btn.classList.remove('disabled');
-      btn.innerText = 'Save Changes';
-      return;
-    }
-  
-    Wiki.alert('Successfully submitted your changes, please wait a few minutes for these changes to take affect', 'success', 2e4);
-
-    // Take user back to non editor page
-    window.location.hash = window.location.hash.replace(/\/+edit$/, '');
-  })();
 }
 
 const createMarkDownEditor =  (elementID, filename) => {
@@ -12617,7 +12555,7 @@ module.exports = {
   createMarkDownEditor,
 }
 
-},{"./markdown-renderer":111}],107:[function(require,module,exports){
+},{"./markdown-renderer":110}],106:[function(require,module,exports){
 var md     = require('markdown-it');
 var Plugin = require('markdown-it-regexp');
 
@@ -12633,7 +12571,7 @@ var plugin = Plugin(
 
 module.exports = plugin;
 
-},{"markdown-it":30,"markdown-it-regexp":27}],108:[function(require,module,exports){
+},{"markdown-it":30,"markdown-it-regexp":27}],107:[function(require,module,exports){
 var md     = require('markdown-it');
 var Plugin = require('markdown-it-regexp');
 
@@ -12651,7 +12589,7 @@ var plugin = Plugin(
 
 module.exports = plugin;
 
-},{"markdown-it":30,"markdown-it-regexp":27}],109:[function(require,module,exports){
+},{"markdown-it":30,"markdown-it-regexp":27}],108:[function(require,module,exports){
 var md     = require('markdown-it');
 var Plugin = require('markdown-it-regexp');
 
@@ -12667,7 +12605,7 @@ var plugin = Plugin(
 
 module.exports = plugin;
 
-},{"markdown-it":30,"markdown-it-regexp":27}],110:[function(require,module,exports){
+},{"markdown-it":30,"markdown-it-regexp":27}],109:[function(require,module,exports){
 var md     = require('markdown-it');
 var Plugin = require('markdown-it-regexp');
 
@@ -12683,7 +12621,7 @@ var plugin = Plugin(
 
 module.exports = plugin;
 
-},{"markdown-it":30,"markdown-it-regexp":27}],111:[function(require,module,exports){
+},{"markdown-it":30,"markdown-it-regexp":27}],110:[function(require,module,exports){
 const markdownit      = require('markdown-it');
 
 // Setup our markdown editor
@@ -12722,7 +12660,7 @@ module.exports = {
   md,
 }
 
-},{"./markdown-plugins/hidden-comments.js":107,"./markdown-plugins/image-size.js":108,"./markdown-plugins/wiki-links-badge.js":109,"./markdown-plugins/wiki-links.js":110,"markdown-it":30,"markdown-it-attrs":21,"markdown-it-container":24,"markdown-it-multimd-table":25}],112:[function(require,module,exports){
+},{"./markdown-plugins/hidden-comments.js":106,"./markdown-plugins/image-size.js":107,"./markdown-plugins/wiki-links-badge.js":108,"./markdown-plugins/wiki-links.js":109,"markdown-it":30,"markdown-it-attrs":21,"markdown-it-container":24,"markdown-it-multimd-table":25}],111:[function(require,module,exports){
 const { md } = require('./markdown-renderer');
 const { applyDatatables } = require('./datatables');
 const { createMarkDownEditor } = require('./markdown-editor');
@@ -12900,7 +12838,7 @@ module.exports = {
     gotoPage,
 };
 
-},{"./datatables":102,"./markdown-editor":106,"./markdown-renderer":111,"./redirections":123}],113:[function(require,module,exports){
+},{"./datatables":102,"./markdown-editor":105,"./markdown-renderer":110,"./redirections":122}],112:[function(require,module,exports){
 const alert = (message, type = 'primary', timeout = 5e3) => {
   const wrapper = document.createElement('div');
   wrapper.classList.add('alert', `alert-${type}`, 'alert-dismissible', 'fade', 'show');
@@ -12923,7 +12861,7 @@ module.exports = {
   alert,
 };
 
-},{}],114:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 
 class DealProfit {
     constructor(type, amount) {
@@ -13102,7 +13040,7 @@ function getDealChains(
 module.exports = {
     getDealChains,
 }
-},{}],115:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 const getOrbLoot = (orb) => {
   const weightSum = orb.items.reduce((acc, item) => acc + item.weight, 0);
   return orb.items.map(item => {
@@ -13119,7 +13057,7 @@ module.exports = {
   getOrbLoot
 };
 
-},{}],116:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 const getTableClearCounts = (dungeon) => {
     if (getTableClearCounts.cache.has(dungeon)) {
         return getTableClearCounts.cache.get(dungeon);
@@ -13380,7 +13318,7 @@ module.exports = {
     itemTypeCategories
 };
 
-},{}],117:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 /**
  * Returns the primary mutation for a berry.
  * Filters out enigma mutations, as they cannot be used to obtain a berry for the first time.
@@ -13400,7 +13338,7 @@ module.exports = {
     getPrimaryMutation,
 };
 
-},{}],118:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 const selectedPlot = ko.observable(undefined);
 const selectedPlotIndex = ko.observable(undefined);
 const plotLabelsEnabled = ko.observable(false);
@@ -13720,7 +13658,7 @@ module.exports = {
     showPlotContextMenu,
 }
 
-},{}],119:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 const getItemName =  (itemType, itemId) => {
     switch (itemType) {
         case ItemType.item:
@@ -13793,7 +13731,7 @@ module.exports = {
     getItemCategoryAndPage,
 };
 
-},{}],120:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 const getOakItemBonus = (oakItem, level) => {
     const bonus = oakItem.bonusList[level];
     switch (oakItem.name) {
@@ -13867,7 +13805,7 @@ module.exports = {
     getOakItemBonus,
     getOakItemUpgradeReq,
 };
-},{}],121:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 
 const getBreedingAttackBonus = (vitaminsUsed, baseAttack) => {
     const attackBonusPercent = (GameConstants.BREEDING_ATTACK_BONUS + vitaminsUsed[GameConstants.VitaminType.Calcium]) / 100;
@@ -13927,7 +13865,7 @@ module.exports = {
     getBestVitamins,
 }
 
-},{}],122:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 const getRequirements = (tempBattle) => {
     const requirements = [];
     tempBattle.requirements?.forEach((req) => {
@@ -13963,7 +13901,7 @@ module.exports = {
     getRequirements,
 }
 
-},{}],123:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 const redirections = [
     ({type, name}) => {
         if (type === 'Pokemon') {
@@ -14015,7 +13953,7 @@ module.exports = {
     redirections
 };
 
-},{}],124:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 const { gotoPage } = require('./navigation');
 
 const searchOptions = [
@@ -14325,4 +14263,4 @@ module.exports = {
   searchOptions,
 };
 
-},{"./navigation":112}]},{},[105]);
+},{"./navigation":111}]},{},[104]);
